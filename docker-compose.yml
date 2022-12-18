@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+  app:
+   container_name: docker-jenkins-test
+   image: sonar-jenkins
+   build:
+     context: .
+     dockerfile: Dockerfile
+   ports:
+     - '8085:8085'
+   depends_on:
+     - db
+  db:
+    container_name: docker-db
+    image: mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: docker-db
+      MYSQL_ROOT_PASSWORD: tqll
+
+    volumes:
+      - ./db:/var/lib/mysql
