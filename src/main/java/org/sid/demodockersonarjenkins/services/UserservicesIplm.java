@@ -1,6 +1,6 @@
 package org.sid.demodockersonarjenkins.services;
 
-import org.apache.catalina.User;
+
 import org.sid.demodockersonarjenkins.models.Users;
 import org.sid.demodockersonarjenkins.repository.UserRepository;
 import org.slf4j.Logger;

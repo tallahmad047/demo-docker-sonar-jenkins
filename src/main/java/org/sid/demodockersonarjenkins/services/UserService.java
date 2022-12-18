@@ -1,6 +1,6 @@
 package org.sid.demodockersonarjenkins.services;
 
-import org.apache.catalina.User;
+
 import org.sid.demodockersonarjenkins.models.Users;
 
 import java.util.List;

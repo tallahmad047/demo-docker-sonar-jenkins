@@ -51,6 +51,12 @@ class UserControllerTest {
 
     @Test
     void createuser() {
+        Users person=new Users( "ahmad","ahmad", "ahmad@gmail.com",
+                 "ahmad1234");
+        personService.createPerson(person);
+        assertNotNull(person);
+        assertEquals("ahmad",person.getNom());
+
     }
 
     @Test

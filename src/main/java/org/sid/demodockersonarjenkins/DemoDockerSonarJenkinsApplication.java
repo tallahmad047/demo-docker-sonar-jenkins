@@ -17,7 +17,7 @@ public class DemoDockerSonarJenkinsApplication {
     }
     @Bean
     CommandLineRunner commandLineRunner(UserService service){
-        return args -> {
+        return args ->
             Stream.of("ahmad","awa","saliou").forEach(nom->{
                 Users users=new Users();
                 users.setNom(nom);
@@ -26,7 +26,7 @@ public class DemoDockerSonarJenkinsApplication {
                 users.setPassword(nom + "1234");
                 service.createPerson(users);
             });
-        };
+
     }
 
 }

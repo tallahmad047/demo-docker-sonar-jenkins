@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.sid.demodockersonarjenkins.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -24,50 +25,56 @@ class UserRepositoryTest {
     }
 
     @Test
-    public void createPerson(){
-        Users person  =  personRepository.save(new Users ("malcolm","malcomx","malcolmx221@gmail.com","778593165"));
+    void create(){
+        Users person = personRepository.save(new Users("tonux","tonux", "tonux@gmail.com", "123456"));
         assertNotNull(person);
-        assertEquals("malcolm",person.getNom());
+        assertEquals("tonux", person.getNom());
     }
+
     @Test
-    public void getPersonById(){
-        Users  personFind = personRepository.findById(2L).get();
-        assertEquals(2,personFind.getId());
+    void update(){
+        //Given
+        Users person = personRepository.save(new Users("tonux","tonux", "tonux@gmail.com", "123456"));
+        person.setNom("Coundoul");
+        //When
+        Users personUpdated = personRepository.save(person);
+        //Then
+        assertNotNull(personUpdated);
+        assertEquals("Coundoul", personUpdated.getNom());
     }
+    // TODO : add test delete
     @Test
-    public void getAllPerson(){
-        List<Users> list = new ArrayList<Users >();
-        list.add(new Users ("tonux","tonux","tonuxndongo@gmail.com","289483931"));
-        list.add(new Users ("lahad","mbacke","blm@gmail.com","4289358298"));
-        list.add(new Users ("baye","seck","bayeserigne@gmail.com","989398493831"));
-        personRepository.saveAll(list);
+    void delete(){
+        Users person=personRepository.save(new Users("tonux","tonux",
+                "tonux@gmail.com", "12938884"));
+        person.setId(1L);
+        personRepository.delete(person);
+        assertNotNull(person);
+        assertEquals(200,HttpStatus.OK.value());
 
-        List<Users > personList = personRepository.findAll();
-
-        Assertions.assertThat(personList.size()).isGreaterThan(0);
     }
+
+
+
+    // TODO : add test findById
     @Test
-    public void updatePerson(){
-        Users  person  =  personRepository.save(new Users ("malcolm","malcomx","malcolmx221@gmail.com","778593165"));
-        person.setNom("mbacke");
-        Users  personupdate  =  personRepository.save(person);
-        assertNotNull(personupdate);
-        assertEquals("mbacke",personupdate.getNom());
+    void findById()
+    {
+        Users person=personRepository.save(new Users("tonux","tonux",
+                "tonux@gmail.com", "12938884"));
+        Optional<Users> personList=personRepository.findById(person.getId());
+        assertNotNull(personList);
+        assertEquals("tonux",personList.get().getNom());
     }
+
+    // TODO : add test findAll
+
     @Test
-    public void deletePerson(){
-        //Person person  =  personRepository.save(new Person("mbacke","malcolmx221@gmail.com","778593165"));
-        Users  person = personRepository.findById(1L).get();
-        personRepository.delete(personRepository.findById(person.getId()).get());
-
-        Users  person1 = null;
-
-        Optional<Users > person2 = personRepository.findByEmail(person.getEmail());
-
-        if (person2.isPresent()){
-            person1 = person2.get();
-        }
-        Assertions.assertThat(person1).isNull();
+    void findAll()
+    {
+        List<Users> personList=personRepository.findAll();
+        assertNotNull(personList);
+        assertEquals(3,personList.size());
     }
 
 }

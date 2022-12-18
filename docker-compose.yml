@@ -2,22 +2,22 @@ version: '3.1'
 services:
   app:
    container_name: docker-jenkins-test
-   image: docker-jenkins
+   image: sonar-jenkins
    build:
      context: .
      dockerfile: Dockerfile
    ports:
-     -  '8085:8085'
+     - '8085:8085'
    depends_on:
-     - dbpostgresdldockerjenkins
-  dbpostgresdldockerjenkins :
-    container_name: docker-jenkins-db
-    image: postgres:9.6
+     - db
+  db:
+    container_name: docker-db
+    image: mysql
     ports:
-      - "5432:5432"
+      - '3306:3306'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: tqll
-      POSTGRES_DB: docker-jenkins-test_db
+      MYSQL_DATABASE: docker-db
+      MYSQL_ROOT_PASSWORD: tqll
+
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ./db:/var/lib/mysql
