@@ -9,7 +9,7 @@ pipeline{
              git branch: 'master' ,url:'https://github.com/tallahmad047/demo-docker-sonar-jenkins.git'
         }
       }
-      stage ('build'){
+      stage ('b'){
         steps{
           sh 'mvn clean package'
         }
