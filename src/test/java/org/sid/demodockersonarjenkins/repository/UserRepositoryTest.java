@@ -74,7 +74,7 @@ class UserRepositoryTest {
     {
         List<Users> personList=personRepository.findAll();
         assertNotNull(personList);
-        assertEquals(3,personList.size());
+        assertEquals(4,personList.size());
     }
 
 }
