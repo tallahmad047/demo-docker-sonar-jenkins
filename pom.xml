@@ -14,10 +14,10 @@
     <name>demo-docker-sonar-jenkins</name>
     <description>demo-docker-sonar-jenkins</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         <maven.version>3.8.6</maven.version>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 
 
     </properties>
