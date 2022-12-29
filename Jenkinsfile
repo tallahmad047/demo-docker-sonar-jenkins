@@ -11,11 +11,12 @@ pipeline{
       }
        stage ('Build') {
                   steps{
-                      sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                      sh 'mvn --version'
+                      //'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
                   }
               }
 
-              stage ('SonarQube Analysis') {
+              /* stage ('SonarQube Analysis') {
                   steps{
                       sh 'mvn sonar:sonar'
                   }
@@ -28,10 +29,10 @@ pipeline{
                   steps{
                       sh 'echo "Deploying into Server dev."'
                   }
-              }
+              } */
           } // stages
 
-          post {
+          /* post {
               aborted {
                   echo "Sending message to Agent"
               } // aborted
@@ -43,5 +44,5 @@ pipeline{
               success {
                   echo "Sending message to Agent"
               } // success
-          } // post
+          }  */// post
    }
