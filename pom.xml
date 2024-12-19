@@ -79,10 +79,10 @@
             <properties>
                 <!-- Optional URL to server. Default value is http://localhost:9000 -->
                 <sonar.host.url>
-                    http://localhost:9000
+                    http://10.20.1.68:31500
                 </sonar.host.url>
                 <sonar.login>admin</sonar.login>
-                <sonar.password>admin123</sonar.password>
+                <sonar.password>artp2024#</sonar.password>
             </properties>
         </profile>
     </profiles>
