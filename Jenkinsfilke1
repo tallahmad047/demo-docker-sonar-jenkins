@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'node'
+    }
+
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Checkout from Git') {
+            steps {
+                git branch: 'master', url: 'https://github.com/0xprime/JenkinsDependencyCheckTest.git'
+            }
+        }
+
+       stage('Install Dependencies') {
+    steps {
+        dir('JenkinsDependencyCheckTest') {
+            sh 'pwd'  // Affiche le chemin actuel
+            sh 'ls -l'  // Affiche la liste des fichiers
+            sh 'ls -l package.json'  // Vérifie si package.json existe bien
+            sh 'npm install'  // Installer les dépendances
+        }
+    }
+}
+
+
+        stage('OWASP Dependency-Check Scan') {
+            steps {
+                dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check', stopBuild: false
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+    }
+}
