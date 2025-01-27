@@ -79,7 +79,7 @@
             <properties>
                 <!-- Optional URL to server. Default value is http://localhost:9000 -->
                 <sonar.host.url>
-                    http://3.236.173.236:9000
+                    http://3.238.200.91:9000
                 </sonar.host.url>
                 <sonar.login>admin</sonar.login>
                 <sonar.password>tall</sonar.password>
