@@ -1,40 +1,78 @@
 pipeline {
     agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('testrivy')
+    }
 
     tools {
-        nodejs 'node'
+        maven '3.8.6'
     }
 
     stages {
-        stage('Clean Workspace') {
+        stage("Source") {
             steps {
-                cleanWs()
+                git branch: 'master', url: 'https://github.com/tallahmad047/demo-docker-sonar-jenkins.git'
             }
         }
 
-        stage('Checkout from Git') {
+        stage("Build") {
             steps {
-                git branch: 'master', url: 'https://github.com/0xprime/JenkinsDependencyCheckTest.git'
+                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
         }
 
-       stage('Install Dependencies') {
-    steps {
-        dir('JenkinsDependencyCheckTest') {
-            sh 'pwd'  // Affiche le chemin actuel
-            sh 'ls -l'  // Affiche la liste des fichiers
-            sh 'ls -l package.json'  // Vérifie si package.json existe bien
-            sh 'npm install'  // Installer les dépendances
-        }
-    }
-}
-
-
-        stage('OWASP Dependency-Check Scan') {
+        stage("OWASP Dependency-Check Scan") {
             steps {
-                dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check', stopBuild: false
+                dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check', stopBuild: true
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
+        }
+
+        stage("SonarQube Analysis") {
+            steps {
+                sh 'mvn sonar:sonar'
+            }
+        }
+
+        stage("Build Docker") {
+            steps {
+                // Build the Docker image
+                sh ' docker build -t tallahmad/trivy:demo-docker-sonar-jenkins .'
+                echo "Scanning Docker image for vulnerabilities: tallahmad/trivy:demo-docker-sonar-jenkins"
+                        sh """
+                            trivy image  --severity HIGH,CRITICAL tallahmad/trivy:demo-docker-sonar-jenkins
+                        """
+
+            }
+        }
+
+        stage("Login to Docker Hub") {
+            steps {
+                sh '''
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                '''
+                echo 'Successfully logged in to Docker Hub'
+            }
+        }
+
+        stage("Push Docker Image") {
+            steps {
+                sh ' docker push tallahmad/trivy:demo-docker-sonar-jenkins'
+            }
+        }
+    }
+
+    post {
+        aborted {
+            echo "Sending message to Agent"
+        }
+
+        failure {
+            echo "Sending message to Agent"
+        }
+
+        success {
+            echo "Sending message to Agent"
         }
     }
 }
